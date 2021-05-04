@@ -129,8 +129,8 @@ export default {
           test10.m4a`,
         },
 
-        {desc: "More dynamic range compression (sounds good but less compact)",  size: 543837, src:'test11.m4a',
-          script: `ffmpeg -i sample.flac -b:a 48k -map a
+        {desc: "More dynamic range compression (sounds good but less compact)",  size: 522743, src:'test11.m4a',
+          script: `ffmpeg -i sample.flac -b:a 46k -map a
           -filter_complex "compand=attacks=0:points=-80/-900|-45/-15|-27/-9|0/-7|20/-7:gain=5"
           test11.m4a`,
         },
