@@ -12,9 +12,9 @@
 
 
 <!-- table -->
-<div class="overflow-x-hidden">
+<div class="overflow-x-hidden min-w-screen">
         <div class="min-w-screen bg-gray-100 flex items-center justify-center font-sans overflow-hidden">
-            <div class="w-full lg:w-5/6">
+            <div class="w-full lg:w-11/12">
                 <div class="bg-white shadow-md rounded my-6">
                     <table class="min-w-max w-full table-auto">
                         <thead>
@@ -30,23 +30,23 @@
                           <!-- repeating section  -->
                             <tr v-for="(sample, index) in examples" :key="`sample-${index}`"
                             class="border-b border-gray-200 hover:bg-gray-100">
-                                <td class="py-3 px-6 text-left whitespace-nowrap">
+                                <td class="py-3 px-6 text-left max-w-xs">
                                     <div class="flex items-center font-medium">
                                      {{sample.desc}}
                                     </div>
                                 </td>
-                                <td class="py-3 px-6 text-left">
-                                    <div class="flex items-center">
+                                <td class="py-3 px-auto text-left overflow-x-wrap max-w-md">
+                                    <div class="flex text-bold text-xs font-mono break-normal">
                                        {{sample.script}}
                                     </div>
                                 </td>
                                 <td class="py-3 px-6 text-center">
                                     <div class="flex items-center justify-center">
-                                      {{sample.size}} (~{{Math.round(sample.size/(1024*1024))}}mb)
+                                      {{sample.size}} <br>(~{{bytes2mb(sample.size)}})
                                     </div>
                                 </td>
                                 <td class="py-3 px-6 text-center">
-                                    <span class="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs">
+                                    <span class="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-2xs">
                                       {{reduction(sample.size)}}%
                                     </span>
                                 </td>
@@ -79,16 +79,80 @@
 export default {
   data() {
     return {
-      baseSize: 10023703,
+      baseSize: 1407140,
       examples: [
-        {desc: "No Lossy Compression, just a .flac file", script: "none", size: 10023703, src:'sample.flac'},
-        {desc: "Sample Lossy Compression, just a .flac file", script: "none", size: 5023703, src:'sample.flac'},
+        {desc: "Original compressed (non-lossy) FLAC", script: "none", size: 10023703, src:'sample.flac'},
+
+        {desc: "ILM compressed version (Baseline)",  size: 1407140, src:'y8.m4a',
+          script: "unknown",
+        },
+
+        {desc: "Direct Conversion to M4A",  size: 1397115, src:'test1.m4a',
+          script: "ffmpeg -i sample.flac test1.m4a",
+        },
+
+        {desc: "Strip extra tags and reduce bitrate",  size: 1073493, src:'test2.m4a',
+          script: "ffmpeg -i sample.flac -b:a 96k -map a test2.m4a",
+        },
+
+        {desc: "Strip extra tags and reduce bitrate further",  size: 719745, src:'test3.m4a',
+          script: "ffmpeg -i sample.flac -b:a 64k -map a test3.m4a",
+        },
+
+        {desc: "Remove audio channel (fail)",  size: 720175, src:'test4.m4a',
+          script: "ffmpeg -i sample.flac -b:a 64k -map a -map_channel 0.0.0 test4.m4a",
+        },
+
+        {desc: "VBR (big fail)",  size: 1285662, src:'test7.m4a',
+          script: "ffmpeg -i sample.flac -c:a aac -q:a 2 -map a test7.m4a",
+        },
+
+        {desc: "Advanced filter (afftdn)",  size: 704199, src:'test5.m4a',
+          script: "ffmpeg -i sample.flac -b:a 64k -map a -af afftdn test5.m4a",
+        },
+
+        {desc: "Advanced filter (anlmdn)",  size: 666728, src:'test6.m4a',
+          script: "ffmpeg -i sample.flac -b:a 64k -map a -af anlmdn test6.m4a",
+        },
+
+        {desc: "Filter (anlmdn) plus tighten bitrate",  size: 504189, src:'test8.m4a',
+          script: "ffmpeg -i sample.flac -b:a 48k -map a -af anlmdn test8.m4a",
+        },
+
+        {desc: "Even tighter bitrate",  size: 487862, src:'test9.m4a',
+          script: "ffmpeg -i sample.flac -b:a 46k -map a -af anlmdn test9.m4a",
+        },
+
+        {desc: "Dynamic range compression (with a gain boost)",  size: 472156, src:'test10.m4a',
+          script: `ffmpeg -i sample.flac -b:a 46k -map a
+          -filter_complex "compand=attacks=0:points=-30/-900|-20/-20|0/0|20/20:gain=5"
+          test10.m4a`,
+        },
+
+        {desc: "More dynamic range compression (sounds good but less compact)",  size: 543837, src:'test11.m4a',
+          script: `ffmpeg -i sample.flac -b:a 48k -map a
+          -filter_complex "compand=attacks=0:points=-80/-900|-45/-15|-27/-9|0/-7|20/-7:gain=5"
+          test11.m4a`,
+        },
+
       ],
     }
   },
   methods: {
     reduction(newSize) {
-       return (((this.baseSize - newSize) / this.baseSize) * 100).toFixed(2)
+       let result = (((this.baseSize - newSize) / this.baseSize) * 100).toFixed(2) * -1
+       if (result > .01) return `+${result}`
+         else return `${result}`
+    },
+    bytes2mb(bytes) {
+      if (bytes > 999999) {
+        let mb = (bytes/(1024*1024)).toFixed(2)
+        return `${mb} mb`
+      } else {
+         let kb = (bytes/(1024)).toFixed(0)
+        return `${kb} kb`
+      }
+
     },
   }
 
