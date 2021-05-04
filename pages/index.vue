@@ -42,7 +42,7 @@
                                 </td>
                                 <td class="py-3 px-6 text-center">
                                     <div class="flex items-center justify-center">
-                                      {{sample.size}}
+                                      {{sample.size}} (~{{Math.round(sample.size/(1024*1024))}}mb)
                                     </div>
                                 </td>
                                 <td class="py-3 px-6 text-center">
