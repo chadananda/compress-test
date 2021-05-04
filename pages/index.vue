@@ -2,7 +2,7 @@
   <div class="w-full h-full overflow-hidden">
     <div class="text-center">
 
-      <h1 class="title"> Voice Compression Challenge </h1>
+      <h1 class="title"> <a href="https://chadananda.github.io/compress-test/">Voice Compression Challenge</a> </h1>
 
       <h3 class="mb-5">
         <a href="/sample.flac" target="_blank" class="opacity-25 hover:opacity-75" download>
@@ -95,7 +95,7 @@ export default {
           script: "ffmpeg -i sample.flac -b:a 96k -map a test2.m4a",
         },
 
-        {desc: "Strip extra tags and reduce bitrate further",  size: 719745, src:'test3.m4a',
+        {desc: "Reduce bitrate further",  size: 719745, src:'test3.m4a',
           script: "ffmpeg -i sample.flac -b:a 64k -map a test3.m4a",
         },
 
@@ -134,6 +134,12 @@ export default {
           -filter_complex "compand=attacks=0:points=-80/-900|-45/-15|-27/-9|0/-7|20/-7:gain=5"
           test11.m4a`,
         },
+
+        // {desc: "Dynamic noise adjustment",  size: 550248, src:'test12.m4a',
+        //   script: `ffmpeg -i sample.flac -b:a 48k -map a
+        //   -c:v copy -c:a aac -b:a 48k -af "dynaudnorm, afade=t=in:ss=0:d=0.5"
+        //   test12.m4a`,
+        // },
 
       ],
     }
