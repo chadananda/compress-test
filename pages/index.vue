@@ -135,11 +135,12 @@ export default {
           test11.m4a`,
         },
 
-        // {desc: "Dynamic noise adjustment",  size: 550248, src:'test12.m4a',
-        //   script: `ffmpeg -i sample.flac -b:a 48k -map a
-        //   -c:v copy -c:a aac -b:a 48k -af "dynaudnorm, afade=t=in:ss=0:d=0.5"
-        //   test12.m4a`,
-        // },
+        {desc: "More dynamic range compression (sounds good but less compact)",  size: 522604, src:'test12.m4a',
+          script: `ffmpeg -i sample.flac -b:a 46k -map a
+          -aac_coder twoloop
+          -filter_complex "compand=attacks=0:points=-80/-900|-45/-15|-27/-9|0/-7|20/-7:gain=5"
+          test12.m4a`,
+        },
 
       ],
     }
