@@ -1,0 +1,18 @@
+name: compress-test
+services:
+  appserver:
+    type: node:14
+    overrides:
+      ports:
+        - '3000:3000'
+  ffmpeg:
+    type: node
+    overrides:
+      image: jrottenberg/ffmpeg:4.3-alpine
+tooling:
+  npm:
+    service: appserver
+  ffmpeg:
+    service: ffmpeg
+  ffprobe:
+    service: ffmpeg
