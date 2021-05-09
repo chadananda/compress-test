@@ -146,10 +146,59 @@ export default {
         // },
 
         {
+          desc: "Use libfdk_aac",
+          size: 1413303,
+          src: "test13.m4a",
+          script: "lando ffmpeg -i static/sample.flac -c:a libfdk_aac static/test13.m4a",
+        },
+
+        {
+          desc: "Use libfdk_aac, 64k",
+          size: 712972,
+          src: "test14.m4a",
+          script: "lando ffmpeg -i static/sample.flac -c:a libfdk_aac -b:a 64k static/test14.m4a",
+        },
+
+        {
           desc: "Use libfdk_aac, 64k 22050hz",
           size: 706030,
-          src: "test13.m4a",
-          script: "lando ffmpeg -i static/sample.flac -c:a libfdk_aac -b:a 64k -ar 22050 static/test13.m4a",
+          src: "test15.m4a",
+          script: "lando ffmpeg -i static/sample.flac -c:a libfdk_aac -b:a 64k -ar 22050 static/test15.m4a",
+        },
+
+        {
+          desc: "Use libfdk_aac, 48k 22050hz",
+          size: 531601,
+          src: "test16.m4a",
+          script: "lando ffmpeg -i static/sample.flac -c:a libfdk_aac -b:a 48k -ar 22050 static/test16.m4a",
+        },
+
+        {
+          desc: "Use libfdk_aac, 32k 22050hz",
+          size: 357173,
+          src: "test17.m4a",
+          script: "lando ffmpeg -i static/sample.flac -c:a libfdk_aac -b:a 32k -ar 22050 static/test17.m4a",
+        },
+
+        {
+          desc: "Use libfdk_aac, 40k 22050hz",
+          size: 444387,
+          src: "test18.m4a",
+          script: "lando ffmpeg -i static/sample.flac -c:a libfdk_aac -b:a 40k -ar 22050 static/test18.m4a",
+        },
+
+        {
+          desc: "Use libfdk_aac, 40k 22050hz, compander",
+          size: 444579,
+          src: "test19.m4a",
+          script: `lando ffmpeg -i static/sample.flac -c:a libfdk_aac -b:a 40k -ar 22050 -filter_complex "compand=attacks=0:points=-80/-900|-45/-15|-27/-9|0/-7|20/-7:gain=5" static/test19.m4a`,
+        },
+
+        {
+          desc: "Use libfdk_aac, 40k 22050hz, normalize (dynamic)",
+          size: 444579,
+          src: "test20.m4a",
+          script: `lando ffmpeg -i static/sample.flac -af "dynaudnorm=f=150:c=1:b=1" -c:a libfdk_aac -b:a 40k -ar 22050 static/test20.m4a`,
         },
 
       ],
