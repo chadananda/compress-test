@@ -3,6 +3,8 @@ services:
   appserver:
     type: node:14
     overrides:
+      environment:
+        HOST: 0.0.0.0
       ports:
         - '3000:3000'
   ffmpeg:
