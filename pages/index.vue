@@ -10,6 +10,8 @@
         <img src="/download.svg" class="w-10 inline" /></a>
       </h3>
 
+      <input type="range" min="0" max="1270" v-model="startValue" class="align-bottom w-6/12" />
+      <span class="w-16 text-right inline-block font-mono text-gray-500">{{ startFrom }}</span>
 
 <!-- table -->
 <div class="overflow-x-hidden min-w-screen">
@@ -28,7 +30,7 @@
                         </thead>
                         <tbody class="text-gray-600 text-sm font-light">
                           <!-- repeating section  -->
-                            <tr v-for="(sample, index) in examples" :key="`sample-${index}`"
+                            <tr v-for="(sample, index) in examples" ref="sample" :key="index"
                             class="border-b border-gray-200 hover:bg-gray-100">
                                 <td class="py-3 px-6 text-left max-w-xs">
                                     <div class="flex items-center font-medium">
@@ -53,9 +55,10 @@
                                 <td class="py-3 px-6 text-center overflow-hidden">
                                     <div class="flex item-center justify-center">
                                         <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                            <audio class="" controls>
+                                            <audio ref="audio" :key="index">
                                                <source :src="sample.src">
                                             </audio>
+                                            <button class="playStop" v-on:click="playAudio" :data-index="index">Play</button>
                                         </div>
                                     </div>
                                 </td>
@@ -80,6 +83,7 @@ export default {
   data() {
     return {
       baseSize: 1407140,
+      startValue: 0,
       examples: [
         {desc: "Original compressed (non-lossy) FLAC", script: "none", size: 10023703, src:'sample.flac'},
 
@@ -144,6 +148,15 @@ export default {
       ],
     }
   },
+  computed: {
+    startFrom: {
+      get: function() {
+        let v = this.startValue / 10
+        if (this.startValue % 10 === 0) return v.toString() + '.0'
+        return v
+      }
+    }
+  },
   methods: {
     reduction(newSize) {
        let result = (((this.baseSize - newSize) / this.baseSize) * 100).toFixed(2) * -1
@@ -160,6 +173,19 @@ export default {
       }
 
     },
+    playAudio(event) {
+      let index = event.target.getAttribute('data-index')
+      if (this.$refs.audio) {
+        let audio = this.$refs.audio[index]
+        console.log(audio)
+        if (audio.paused == false) audio.pause()
+        else {
+          this.$refs.audio.forEach(e => e.pause())
+          audio.currentTime = this.startFrom
+          audio.play()
+        }
+      }
+    }
   }
 
 }
