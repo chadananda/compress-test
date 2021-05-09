@@ -145,6 +145,13 @@ export default {
         //   test12.m4a`,
         // },
 
+        {
+          desc: "Use libfdk_aac, 64k 22050hz",
+          size: 706030,
+          src: "test13.m4a",
+          script: "lando ffmpeg -i static/sample.flac -c:a libfdk_aac -b:a 64k -ar 22050 static/test13.m4a",
+        },
+
       ],
     }
   },
