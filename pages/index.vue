@@ -10,7 +10,7 @@
         <img src="/download.svg" class="w-10 inline" /></a>
       </h3>
 
-      <input type="range" min="0" max="1270" v-model="startValue" class="align-bottom w-6/12" />
+      <input type="range" min="0" max="870" v-model="startValue" class="align-bottom w-6/12" />
       <span class="w-16 text-right inline-block font-mono text-gray-500">{{ startFrom }}</span>
 
 <!-- table -->
@@ -196,10 +196,31 @@ export default {
         },
 
         {
-          desc: "Use libfdk_aac, 40k 22050hz, normalize (dynamic)",
-          size: 444579,
+          desc: "Use libfdk_aac, 40k 22050hz, normalize (dynamic) to .95",
+          size: 444433,
           src: "test20.m4a",
           script: `ffmpeg -i sample.flac -af "dynaudnorm=f=150:c=1:b=1" -c:a libfdk_aac -b:a 40k -ar 22050 test20.m4a`,
+        },
+
+        {
+          desc: "Use libfdk_aac, 40k 22050hz, normalize (dynamic) to .90",
+          size: 444426,
+          src: "test21.m4a",
+          script: `ffmpeg -i sample.flac -af "dynaudnorm=p=0.90:f=150:c=1:b=1" -c:a libfdk_aac -b:a 40k -ar 22050 test21.m4a`,
+        },
+
+        {
+          desc: "Use libfdk_aac, 40k 22050hz, normalize (dynamic) to .85",
+          size: 444413,
+          src: "test22.m4a",
+          script: `ffmpeg -i sample.flac -af "dynaudnorm=p=0.85:f=150:c=1:b=1" -c:a libfdk_aac -b:a 40k -ar 22050 test22.m4a`,
+        },
+
+        {
+          desc: "Use libfdk_aac, 40k 22050hz, normalize (dynamic) to .85 with max gain 5",
+          size: 444387,
+          src: "test23.m4a",
+          script: `ffmpeg -i sample.flac -af "dynaudnorm=p=0.85:m=5:f=150:c=1:b=1" -c:a libfdk_aac -b:a 40k -ar 22050 test23.m4a`,
         },
 
       ],
