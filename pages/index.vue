@@ -5,9 +5,9 @@
       <h1 class="title"> <a href="https://chadananda.github.io/compress-test/">Voice Compression Challenge</a> </h1>
 
       <h3 class="mb-5">
-        <a href="/sample.flac" target="_blank" class="opacity-25 hover:opacity-75" download>
+        <a href="sample.flac" target="_blank" class="opacity-25 hover:opacity-75" download>
         <span class="text-green underline">Source audio: sample.flac (10mb)</span>
-        <img src="/download.svg" class="w-10 inline" /></a>
+        <img src="download.svg" class="w-10 inline" /></a>
       </h3>
 
       <input type="range" min="0" max="870" v-model="startValue" class="align-bottom w-6/12" />
