@@ -56,7 +56,7 @@
                                     <div class="flex item-center justify-center">
                                         <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                                             <audio ref="audio" :key="index">
-                                               <source :src="`/${sample.src}`">
+                                               <source :src="sample.src">
                                             </audio>
                                             <button class="playStop" v-on:click="playAudio" :data-index="index">Play</button>
                                         </div>
