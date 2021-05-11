@@ -60,8 +60,8 @@
               <td class="py-3 px-6 text-center overflow-hidden">
                 <div class="flex item-center justify-center">
                   <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                    <audio ref="audio" :key="index"> <source :src="sample.src"> </audio>
-                    <button class="playStop px-3" v-on:click="playAudio" :data-index="index"> Play </button>
+                    <audio ref="audio" :key="`${sample.src}`"> <source :src="sample.src"> </audio>
+                    <button class="playStop px-3" v-on:click="playAudio(index)"> Play </button>
                   </div>
                 </div>
               </td>
@@ -110,6 +110,10 @@ export default {
     }
   },
   methods: {
+    setSamples(sample) {
+      // set current sample, change examples and change audio list
+
+    },
     reduction(newSize) {
        let result = (((this.curr.baseSize - newSize) / this.curr.baseSize) * 100).toFixed(2) * -1
        if (result > .01) return `+${result}`
@@ -125,11 +129,13 @@ export default {
       }
 
     },
-    playAudio(event) {
-      let index = event.target.getAttribute('data-index')
+    playAudio(index) {
+      // console.log(index)
+      // return
+      // let index = event.target.getAttribute('data-index')
       if (this.$refs.audio) {
         let audio = this.$refs.audio[index]
-        console.log(audio)
+        // console.log(audio)
         if (audio.paused == false) audio.pause()
         else {
           this.$refs.audio.forEach(e => e.pause())
