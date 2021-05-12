@@ -10,9 +10,14 @@ allsamples: [
 allexamples: [
   // Country Doctor
   { sample: 'country_doc',
-  desc: "Original compressed (non-lossy) FLAC", script: "none", size: 5355179, src:'country_doc/source.flac'},
+    desc: "Original compressed (non-lossy) FLAC", script: "none", size: 5355179, src:'country_doc/source.flac'},
   { sample: 'country_doc',
-  desc: "ILM compressed version (Baseline)",  size: 2123255, src:'country_doc/ilm-c4.m4a', script: "unknown", },
+    desc: "ILM compressed version (Baseline)",  size: 2123255, src:'country_doc/ilm-c4.m4a', script: "unknown", },
+  { sample: 'country_doc',
+    desc: "Advanced filter (anlmdn)", size: 1412386,
+    src: "country_doc/test01.m4a",
+    script: `ffmpeg -i country_doc/source.flac -b:a 46k -map a -af anlmdn country_doc/test01.m4a`,
+  },
   { sample: 'country_doc',
     desc: "Use libfdk_aac, 40k 22050hz, normalize (dynamic) to .95", size: 1202017,
     src: "country_doc/test20.m4a",
