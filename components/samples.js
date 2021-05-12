@@ -14,7 +14,7 @@ allexamples: [
   { sample: 'country_doc',
   desc: "ILM compressed version (Baseline)",  size: 2123255, src:'country_doc/ilm-c4.m4a', script: "unknown", },
   { sample: 'country_doc',
-    desc: "Use libfdk_aac, 40k 22050hz, normalize (dynamic) to .95", size: 0,
+    desc: "Use libfdk_aac, 40k 22050hz, normalize (dynamic) to .95", size: 1202017,
     src: "country_doc/test20.m4a",
     script: `ffmpeg -i country_doc/source.flac -af "dynaudnorm=f=150:c=1:b=1" -c:a libfdk_aac -b:a 40k -ar 22050 country_doc/test20.m4a`,
     best: true
@@ -26,10 +26,16 @@ allexamples: [
     desc: "Original compressed (non-lossy) FLAC", script: "none", size: 7345039, src:'candide/source.flac'},
   { sample: 'candide',
     desc: "ILM compressed version (Baseline)",  size: 2117892, src:'candide/ilm-blo8.m4a', script: "unknown", },
+
   { sample: 'candide',
     desc: "Advanced filter (anlmdn)", size: 1409563,
     src: "candide/test01.m4a",
     script: `ffmpeg -i candide/source.flac -b:a 46k -map a -af anlmdn candide/test01.m4a`,
+  },
+  { sample: 'candide',
+    desc: "Use libfdk_aac, 40k 22050hz, normalize (dynamic) to .95", size: 1199025,
+    src: "candide/test20.m4a",
+    script: `ffmpeg -i candide/source.flac -af "dynaudnorm=f=150:c=1:b=1" -c:a libfdk_aac -b:a 40k -ar 22050 candide/test20.m4a`,
     best: true
   },
 
